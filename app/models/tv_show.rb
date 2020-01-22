@@ -3,7 +3,7 @@ class TvShow < ActiveRecord::Base
   has_many :episodes
 
   def to_json(_)
-    ep = []
+    crete_product = []
     episodes.each do |e|
       ep << {id: e.id, title: e.title}
     end
@@ -11,7 +11,8 @@ class TvShow < ActiveRecord::Base
     JSON.generate({
       id: id,
       title: title,
-      episodes: ep
+      # episodes: ep,
     })
   end
+
 end

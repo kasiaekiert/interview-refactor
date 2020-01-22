@@ -17,5 +17,6 @@ module InterviewRefactor
     # the framework and any gems in your application.
 
     config.active_record.sqlite3.represent_boolean_as_integer = true
+
   end
 end

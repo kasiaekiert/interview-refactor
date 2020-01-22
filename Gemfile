@@ -43,4 +43,5 @@ group :development, :test do
   gem 'spring'
 
   gem 'rspec-rails'
+  gem 'faker', '~> 1.6', '>= 1.6.3', :require => false
 end

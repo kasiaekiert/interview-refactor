@@ -44,6 +44,6 @@ class TvShowsController < ApplicationController
 
   private
   def tv_show_params
-    params.require('tv_show').permit('title')
+    params.require('tv_show').permit('title', 'description')
   end
 end
