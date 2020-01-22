@@ -4,7 +4,7 @@ class TvShowsController < ApplicationController
   def index
     @tv_shows = TvShow.all
     respond_to do |format|
-      format.json { render :json => @tv_shows }
+      format.json
     end
   end
 

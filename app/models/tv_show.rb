@@ -1,9 +1,9 @@
 class TvShow < ActiveRecord::Base
   belongs_to :user
-  has_many :episodes
+  has_many :episodes, dependent: :destroy
 
   def to_json(_)
-    crete_product = []
+    create_product = []
     episodes.each do |e|
       ep << {id: e.id, title: e.title}
     end
@@ -11,7 +11,7 @@ class TvShow < ActiveRecord::Base
     JSON.generate({
       id: id,
       title: title,
-      # episodes: ep,
+      episodes: ep,
     })
   end
 
