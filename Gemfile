@@ -44,4 +44,6 @@ group :development, :test do
 
   gem 'rspec-rails'
   gem 'faker', '~> 1.6', '>= 1.6.3', :require => false
+  gem 'reek', '~> 4.8', '>= 4.8.1'
+  gem 'rubocop', require: false
 end
