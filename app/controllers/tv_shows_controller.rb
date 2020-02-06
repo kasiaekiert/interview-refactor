@@ -1,49 +1,40 @@
 class TvShowsController < ApplicationController
   before_action :authenticate_user!
+  skip_before_action :verify_authenticity_token
 
   def index
-    @tv_shows = TvShow.all
-    respond_to do |format|
-      format.json { render :json => @tv_shows }
-    end
+    Rails.logger.info "obecny user: #{current_user.id}"
+    render json: current_user.tv_shows.includes(:episodes).all
   end
 
   def show
-    @tv_show = TvShow.find(params[:id])
-    respond_to do |format|
-      format.json { render :json => @tv_show }
-    end
+    render json: tv_show
   end
 
   def create
-    @tv_show = TvShow.new(tv_show_params)
-    @tv_show.user_id = current_user.id
-    if @tv_show.save
-      respond_to do |format|
-        format.json { render :json => @tv_show }
-      end
-    end
+    tv_show_object = current_user.tv_shows.create!(tv_show_params)
+    render json: tv_show_object
   end
 
   def update
-    @tv_show = TvShow.find(params[:id])
-    if @tv_show.update_attributes(tv_show_params)
-      respond_to do |format|
-        format.json { render :json => @tv_show }
-      end
-    end
+    tv_show.update!(tv_show_params)
+    render json: tv_show
   end
 
   def destroy
-    @tv_show = TvShow.find(params[:id])
-    @tv_show.delete
-    respond_to do |format|
-      format.json { render :json => @tv_show }
-    end
+    tv_show.destroy!
+    render json: tv_show
   end
 
   private
+
   def tv_show_params
-    params.require('tv_show').permit('title')
+    params.require(:tv_show).permit(:title)
+    # params.permit(:title)
+
+  end
+
+  def tv_show
+    @tv_show ||= current_user.tv_shows.find(params[:id])
   end
 end
