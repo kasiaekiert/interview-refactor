@@ -2,6 +2,10 @@ class TvShow < ActiveRecord::Base
   belongs_to :user
   has_many :episodes
 
+  def my_episodes
+    Episode.where(tv_show_id: id)
+  end
+
   def to_json(_)
     ep = []
     episodes.each do |e|

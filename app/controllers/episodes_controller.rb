@@ -1,54 +1,41 @@
 class EpisodesController < ApplicationController
   before_action :authenticate_user!
+  skip_before_action :verify_authenticity_token
+  delegate :tv_shows, to: :current_user
 
   def index
-    @tv_show = TvShow.find(params[:tv_show_id])
-    @episodes = Episode.where(tv_show_id: @tv_show.id)
-    respond_to do |format|
-      format.json { render :json => @episodes }
-    end
+    render json: tv_show.episodes
   end
 
   def show
-    @tv_show = TvShow.find(params[:tv_show_id])
-    @episode = Episode.where(id: params[:id], tv_show_id: @tv_show.id).first
-    respond_to do |format|
-      format.json { render :json => @episode }
-    end
+    render json: episode
   end
 
   def create
-    @tv_show = TvShow.find(params[:tv_show_id])
-    @episode = Episode.new(episode_params)
-    @episode.tv_show_id = @tv_show.id
-    if @episode.save
-      respond_to do |format|
-        format.json { render :json => @episode }
-      end
-    end
+    episode_object = tv_shows.episodes.create!(episode_params)
+    render json: episode_object
   end
 
   def update
-    @tv_show = TvShow.find(params[:tv_show_id])
-    @episode = Episode.where(id: params[:id], tv_show_id: @tv_show.id).first
-    if @episode.update_attributes(episode_params)
-      respond_to do |format|
-        format.json { render :json => @episode }
-      end
-    end
+    episode.update!(episode_params)
+    render json: episode
   end
 
   def destroy
-    @tv_show = TvShow.find(params[:tv_show_id])
-    @episode = Episode.where(id: params[:id], tv_show_id: @tv_show.id).first
-    @episode.delete
-    respond_to do |format|
-      format.json { render :json => @episode }
-    end
+    episode.destroy!(episode_params)
+    render json: episode
   end
 
   private
   def episode_params
     params.require('episode').permit('title', 'watched')
+  end
+
+  def tv_show
+    @tv_show ||= tv_shows.find(params[:tv_show_id])
+  end
+
+  def episode
+    @episode ||= tv_shows.find(params[:id])
   end
 end

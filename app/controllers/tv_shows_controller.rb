@@ -3,7 +3,6 @@ class TvShowsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    Rails.logger.info "obecny user: #{current_user.id}"
     render json: current_user.tv_shows.includes(:episodes).all
   end
 
@@ -30,8 +29,6 @@ class TvShowsController < ApplicationController
 
   def tv_show_params
     params.require(:tv_show).permit(:title)
-    # params.permit(:title)
-
   end
 
   def tv_show
