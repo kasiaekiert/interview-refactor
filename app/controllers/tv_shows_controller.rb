@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TvShowsController < ApplicationController
   before_action :authenticate_user!
   skip_before_action :verify_authenticity_token
@@ -11,18 +13,29 @@ class TvShowsController < ApplicationController
   end
 
   def create
-    tv_show_object = current_user.tv_shows.create!(tv_show_params)
-    render json: tv_show_object
+    tv_show_object = current_user.tv_shows.new(tv_show_params)
+    if tv_show_object.save
+      render json: tv_show_object
+    else
+      json_errors_for(tv_show_object)
+    end
   end
 
   def update
-    tv_show.update!(tv_show_params)
-    render json: tv_show
+    if tv_show.update(tv_show_params)
+      render json: tv_show
+    else
+      json_errors_for(tv_show)
+    end
   end
 
   def destroy
-    tv_show.destroy!
-    render json: tv_show
+    form = TvShowDestroyForm.new(tv_show: tv_show)
+    if form.destroy
+      render json: form.tv_show
+    else
+      json_errors_for(form)
+    end
   end
 
   private

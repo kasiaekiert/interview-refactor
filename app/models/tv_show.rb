@@ -3,6 +3,7 @@
 class TvShow < ActiveRecord::Base
   belongs_to :user
   has_many :episodes
+  validates :title, :description, presence: true
 
   def my_episodes
     Episode.where(tv_show_id: id)
