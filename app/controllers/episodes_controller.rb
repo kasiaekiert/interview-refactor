@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EpisodesController < ApplicationController
   before_action :authenticate_user!
   skip_before_action :verify_authenticity_token
@@ -27,8 +29,9 @@ class EpisodesController < ApplicationController
   end
 
   private
+
   def episode_params
-    params.require('episode').permit('title', 'watched')
+    params.require(:episode).permit(:title, :watched)
   end
 
   def tv_show
