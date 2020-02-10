@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TvShow < ActiveRecord::Base
   belongs_to :user
   has_many :episodes
@@ -6,16 +8,17 @@ class TvShow < ActiveRecord::Base
     Episode.where(tv_show_id: id)
   end
 
-  def to_json(_)
-    ep = []
-    episodes.each do |e|
-      ep << {id: e.id, title: e.title}
-    end
+  # This is not used anymore, I use ActiveModel Serializers gem.
+  # def to_json(_)
+  #   ep = []
+  #   episodes.each do |e|
+  #     ep << {id: e.id, title: e.title}
+  #   end
 
-    JSON.generate({
-      id: id,
-      title: title,
-      episodes: ep
-    })
-  end
+  #   JSON.generate({
+  #     id: id,
+  #     title: title,
+  #     episodes: ep
+  #   })
+  # end
 end
